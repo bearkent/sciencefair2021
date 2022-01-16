@@ -1,4 +1,5 @@
 from flask import Blueprint, app, render_template, request, redirect
+from flask.helpers import url_for
 
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
@@ -76,12 +77,12 @@ def item_submit():
     date_missed = form.date_missed.data
     image_link = form.image_link.data    
 
-    id = table_insert(date_missed, image_link)
-    redirect()
-   
-
-    # redirect("/home_page")
-    return render_template("index.html", form=form, message=message)
+    if request.method == "POST":   
+        id = table_insert(date_missed, image_link)
+        # return redirect(url_for("Views.id_index", id = id))
+        return redirect(url_for("Views.test"))
+    else:
+        return render_template("index.html", form=form, message=message)
 
 @views.route("/home_page")
 def home_page():
@@ -129,7 +130,7 @@ def print_table2():
 
 @views.route('/submission/<id>')    #int has been used as a filter that only integer will be passed in the url otherwise it will give a 404 error
 def id_index(id):  
-    return f'id number is {id}'
+    return render_template("submit.html", id=id)
 
 @views.route("/test")
 def test():
