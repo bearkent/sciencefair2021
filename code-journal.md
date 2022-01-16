@@ -11,4 +11,4 @@ Credit to this video https://youtu.be/kng-mJJby8g to teaching me how to use and 
 
 1/14/21 Made a form using forms-wtf and bootstrap. Also set up sqlite3 as a database for easy data collection.
 
-1/15/21 Made a function that takes the data from the database and then adds it to a webpage.
+1/15/21 Made a function that takes the data from the database and then adds it to a webpage. Finished the code to send you to a page that has your case.
