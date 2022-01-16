@@ -18,21 +18,28 @@ class ItemForm(FlaskForm):
 def get_con():
     return sqlite3.connect("test.db")
 
+def get_row_id(cur, table_name):
+    cur.execute(f'''SELECT last_insert_rowid()''')
+    return cur.fetchone()[0]
+
 def table_insert(date_missed, image_link):
-    
-    exists = table_exists("items")
+    table_name = "items"
+    exists = table_exists(table_name)
     
     con = get_con()
     cur=con.cursor()
     if not exists:
-        cur.execute('''CREATE TABLE items
+        cur.execute(f'''CREATE TABLE {table_name}
             (date_missed text, image_link text)''')
     # cur.execute('''CREATE TABLE items
     #         (date_missed text, image_link text)''')
-    cur.execute(f"INSERT INTO items VALUES ('{date_missed}', '{image_link}')")
+    cur.execute(f"INSERT INTO {table_name} VALUES ('{date_missed}', '{image_link}')")
+    id = get_row_id(cur, table_name)
     con.commit()
     con.close()
 
+    return id
+    
 def table_exists(name):
     con = get_con()
     c = con.cursor()
@@ -68,9 +75,9 @@ def item_submit():
     message = ""
     date_missed = form.date_missed.data
     image_link = form.image_link.data    
-    
-    table_insert(date_missed, image_link)
-    redirect("/home_page")
+
+    id = table_insert(date_missed, image_link)
+    redirect("/case_<id>")
    
 
     # redirect("/home_page")
@@ -112,10 +119,12 @@ def print_table2():
     
     rst = "TABLE DATA\n"
     
-    for row in cur.execute('SELECT * FROM items ORDER BY date_missed'):
+    for row in cur.execute('SELECT ROWID,* FROM items ORDER BY date_missed'):
         items.append(row)
     
     # for item in items:
     #     print(item)
     
     return render_template("home_page.html", len = len(items), items = items)
+
+@views.route("/<id>")
