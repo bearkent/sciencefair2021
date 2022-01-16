@@ -23,6 +23,16 @@ def get_row_id(cur, table_name):
     cur.execute(f'''SELECT last_insert_rowid()''')
     return cur.fetchone()[0]
 
+def table_query(cur, table_name, id):
+    cur.execute(f'''SELECT ROWID, * FROM {table_name} WHERE ROWID == {id}''')
+    vals = cur.fetchone()
+    rst = {
+        "id": vals[0],
+        "date_missed": vals[1],
+        "image_link": vals[2]
+    }
+    return rst
+
 def table_insert(date_missed, image_link):
     table_name = "items"
     exists = table_exists(table_name)
@@ -80,7 +90,8 @@ def item_submit():
     if request.method == "POST":   
         id = table_insert(date_missed, image_link)
         # return redirect(url_for("Views.id_index", id = id))
-        return redirect(url_for("Views.id_index", id=id, date_missed=date_missed, image_link=image_link))
+        print(f"Debug: {id}, {date_missed}, {image_link}")
+        return redirect(url_for("Views.id_index", id=id))
     else:
         return render_template("index.html", form=form, message=message)
 
@@ -129,11 +140,26 @@ def print_table2():
     return render_template("home_page.html", len = len(items), items = items)
 
 @views.route('/submission/<id>')    #int has been used as a filter that only integer will be passed in the url otherwise it will give a 404 error
-def id_index(id):  
-    return render_template("submit.html", id=id)
+def id_index(id):
+    conn = get_con()
+    cur = conn.cursor()
+    values = table_query(cur, 'items', id)
+    # return render_template("submit.html", id=id, date_missed=date_missed, image_link=image_link)
+    return render_template("submit.html", **values)
+
+# @views.route('/submission/<id>')    #int has been used as a filter that only integer will be passed in the url otherwise it will give a 404 error
+# def id_index(id):
+#     print(f"DEBUG VALUES: {values}")
+#     id = values["id"]
+#     date_missed = values["date_missed"]
+#     image_link = values["image_link"]  
+#     return render_template("submit.html", id=id, date_missed=date_missed, image_link=image_link)
+
 
 @views.route("/test")
 def test():
     return render_template("test.html")
+
+
 
 # @views.route("/<id>")

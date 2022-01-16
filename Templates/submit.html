@@ -10,6 +10,10 @@
     <h1> Click here to reload </h1>
     <a href = {{ url_for('Views.id_index' ,id=id ) }}>Reload</a>
 
+    <p>id: {{ id }}</p>
+    <p>date_missed:{{ date_missed }}</p>
+    <p>image_link:{{ image_link }}</p>
+
     {% block content %}
 
     <div class="container">
