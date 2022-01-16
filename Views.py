@@ -77,7 +77,7 @@ def item_submit():
     image_link = form.image_link.data    
 
     id = table_insert(date_missed, image_link)
-    redirect("/case_<id>")
+    redirect()
    
 
     # redirect("/home_page")
@@ -127,4 +127,12 @@ def print_table2():
     
     return render_template("home_page.html", len = len(items), items = items)
 
-@views.route("/<id>")
+@views.route('/submission/<id>')    #int has been used as a filter that only integer will be passed in the url otherwise it will give a 404 error
+def id_index(id):  
+    return f'id number is {id}'
+
+@views.route("/test")
+def test():
+    return render_template("test.html")
+
+# @views.route("/<id>")
