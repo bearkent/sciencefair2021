@@ -7,7 +7,26 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Your Link to your case is</h1>
-    <a href = {{ url_for('Views.id_index' ,id=id ) }}>Your Item</a>
+    <h1> Click here to reload </h1>
+    <a href = {{ url_for('Views.id_index' ,id=id ) }}>Reload</a>
+
+    {% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
+
+                <h1 class="pt-5 pb-2"> Your case has been sumbitted and being searched for. Please check and reload this page often to see any news</h1>
+                <h5 class="pt-5 pb-2"> Date Missed:{{ date_missed }} </h5>
+                <img src='{{ image_link }}' alt='Your Item'>
+
+                <p class="pt-5"><strong>{{ message }}</strong></p>
+
+             </div>
+        </div>
+    </div>
+
+    {% endblock %}
+
 </body>
 </html>

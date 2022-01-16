@@ -80,7 +80,7 @@ def item_submit():
     if request.method == "POST":   
         id = table_insert(date_missed, image_link)
         # return redirect(url_for("Views.id_index", id = id))
-        return redirect(url_for("Views.test"))
+        return redirect(url_for("Views.id_index", id=id, date_missed=date_missed, image_link=image_link))
     else:
         return render_template("index.html", form=form, message=message)
 
