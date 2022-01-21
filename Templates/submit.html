@@ -8,11 +8,7 @@
 </head>
 <body>
     <h1> Click here to reload </h1>
-    <a href = {{ url_for('Views.id_index' ,id=id ) }}>Reload</a>
-
-    <p>id: {{ id }}</p>
-    <p>date_missed:{{ date_missed }}</p>
-    <p>image_link:{{ image_link }}</p>
+    <a href = {{ url_for('Views.id_index' ,id=id ) }}>http://127.0.0.1:5000{{ url_for('Views.id_index' ,id=id ) }}</a>
 
     {% block content %}
 
@@ -22,8 +18,9 @@
 
                 <h1 class="pt-5 pb-2"> Your case has been sumbitted and being searched for. Please check and reload this page often to see any news</h1>
                 <h5 class="pt-5 pb-2"> Date Missed:{{ date_missed }} </h5>
+                <h5 class="pt-5 pb-2"> Item Name:{{ item_name }} </h5>
                 <img src='{{ image_link }}' alt='Your Item'>
-
+                
                 <p class="pt-5"><strong>{{ message }}</strong></p>
 
              </div>

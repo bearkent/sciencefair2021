@@ -13,7 +13,8 @@ views = Blueprint(__name__, "Views")
 # Bootstrap(app)
 class ItemForm(FlaskForm):
     date_missed = StringField('When was your item stolen?', validators=[DataRequired()])
-    image_link = StringField('Insert a link to the image here.', validators=[DataRequired()])
+    image_link = StringField('Insert a link to the image.', validators=[DataRequired()])
+    item_name = StringField('Insert the exact item name.', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 def get_con():
@@ -26,14 +27,16 @@ def get_row_id(cur, table_name):
 def table_query(cur, table_name, id):
     cur.execute(f'''SELECT ROWID, * FROM {table_name} WHERE ROWID == {id}''')
     vals = cur.fetchone()
+    print(vals)
     rst = {
         "id": vals[0],
         "date_missed": vals[1],
-        "image_link": vals[2]
+        "image_link": vals[2],
+        "item_name": vals[3]
     }
     return rst
 
-def table_insert(date_missed, image_link):
+def table_insert(date_missed, image_link, item_name):
     table_name = "items"
     exists = table_exists(table_name)
     
@@ -41,10 +44,10 @@ def table_insert(date_missed, image_link):
     cur=con.cursor()
     if not exists:
         cur.execute(f'''CREATE TABLE {table_name}
-            (date_missed text, image_link text)''')
+            (date_missed text, image_link text, item_name text)''')
     # cur.execute('''CREATE TABLE items
     #         (date_missed text, image_link text)''')
-    cur.execute(f"INSERT INTO {table_name} VALUES ('{date_missed}', '{image_link}')")
+    cur.execute(f"INSERT INTO {table_name} VALUES ('{date_missed}', '{image_link}', '{item_name}')")
     id = get_row_id(cur, table_name)
     con.commit()
     con.close()
@@ -85,12 +88,13 @@ def item_submit():
     form = ItemForm()
     message = ""
     date_missed = form.date_missed.data
-    image_link = form.image_link.data    
+    image_link = form.image_link.data
+    item_name = form.item_name.data    
 
     if request.method == "POST":   
-        id = table_insert(date_missed, image_link)
+        id = table_insert(date_missed, image_link, item_name)
         # return redirect(url_for("Views.id_index", id = id))
-        print(f"Debug: {id}, {date_missed}, {image_link}")
+        print(f"Debug: {id}, {date_missed}, {image_link}, {item_name}")
         return redirect(url_for("Views.id_index", id=id))
     else:
         return render_template("index.html", form=form, message=message)
@@ -145,7 +149,9 @@ def id_index(id):
     cur = conn.cursor()
     values = table_query(cur, 'items', id)
     # return render_template("submit.html", id=id, date_missed=date_missed, image_link=image_link)
+    print(values)
     return render_template("submit.html", **values)
+
 
 # @views.route('/submission/<id>')    #int has been used as a filter that only integer will be passed in the url otherwise it will give a 404 error
 # def id_index(id):
