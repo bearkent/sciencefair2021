@@ -8,6 +8,8 @@ from wtforms.validators import DataRequired
 
 import sqlite3
 
+from Craigslist import craigslistGetter
+
 views = Blueprint(__name__, "Views")
 
 # Bootstrap(app)
@@ -149,6 +151,9 @@ def id_index(id):
     cur = conn.cursor()
     values = table_query(cur, 'items', id)
     # return render_template("submit.html", id=id, date_missed=date_missed, image_link=image_link)
+    items_list = craigslistGetter(values["item_name"], values["date_missed"])
+    
+    values["items_list"] = items_list
     print(values)
     return render_template("submit.html", **values)
 
