@@ -27,7 +27,10 @@ def get_row_id(cur, table_name):
     return cur.fetchone()[0]
 
 def table_query(cur, table_name, id):
-    cur.execute(f'''SELECT ROWID, * FROM {table_name} WHERE ROWID == {id}''')
+    print(f"TABLE_QUERY: {table_name} {id}")
+    query = f'''SELECT ROWID, * FROM {table_name} WHERE ROWID == {id}'''
+    print(query)
+    cur.execute(query)
     vals = cur.fetchone()
     print(vals)
     rst = {
@@ -147,14 +150,25 @@ def print_table2():
 
 @views.route('/submission/<id>')    #int has been used as a filter that only integer will be passed in the url otherwise it will give a 404 error
 def id_index(id):
+    print(f"ID_INDEX: {id}")
+    
+    try:
+        int(id)
+        print("valid")
+    except:
+        print("invalid")
+        return f"Invalid ID: {id}"
+    
     conn = get_con()
     cur = conn.cursor()
     values = table_query(cur, 'items', id)
     # return render_template("submit.html", id=id, date_missed=date_missed, image_link=image_link)
     items_list = craigslistGetter(values["item_name"], values["date_missed"])
     
+    # print(items_list)
+    
     values["items_list"] = items_list
-    print(values)
+    print(f"VALUES: {values}")
     return render_template("submit.html", **values)
 
 

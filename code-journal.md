@@ -24,3 +24,7 @@ Credit to this video https://youtu.be/kng-mJJby8g to teaching me how to use and 
 1/24/22 Trying to change what I thought was a memory object was a string.
 
 1/26/22 Realized that what I thought was a memory object was actually a elementtree object from lxml, so I changed the code, and the parser worked. Added some code to the view to add the image and craigslist url to the html.
+
+1/27/22 Added some code in the html that pulls the image and url from craigslist. Not working yet. Also sqlite is outputting errors on "no such column: width"
+
+1/29/22 Debbuged tehe sqlite error by removing some stuff in the html. Unknoen why it is happening. Then fixed the loop to make the submit.html page display the items.

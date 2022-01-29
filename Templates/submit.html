@@ -30,7 +30,18 @@
     {% endblock %}
 
     <div>
-        {% for item in values["item_list"] %}
+
+        {%for item_list in items_list%}
+
+        <a href= {{ item_list[0] }} >
+            <img src= {{ item_list[1] }} >
+        </a>
+
+        {%endfor%}
+
+        <!-- <a href= {{ items_list[0] }} >
+            <img src= {{ items_list[1] }} >
+        </a> -->
     </div>
 
 </body>
