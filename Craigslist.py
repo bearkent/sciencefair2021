@@ -26,6 +26,4 @@ def craigslistGetter(item_name, date_missed):
     
     
     return items_list
-
-# print(craigslistGetter('iphone', ''))
-    
+  

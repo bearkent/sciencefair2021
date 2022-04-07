@@ -16,6 +16,6 @@ def isSpam(url):
         
     return False
 
-isSpam('https://cosprings.craigslist.org/mad/d/surplus-bronze-acrylic-sheets-solar/7438433887.html')
+# isSpam('https://cosprings.craigslist.org/mad/d/surplus-bronze-acrylic-sheets-solar/7438433887.html')
 
                 

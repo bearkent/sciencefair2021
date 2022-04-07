@@ -27,12 +27,9 @@ def get_row_id(cur, table_name):
     return cur.fetchone()[0]
 
 def table_query(cur, table_name, id):
-    print(f"TABLE_QUERY: {table_name} {id}")
     query = f'''SELECT ROWID, * FROM {table_name} WHERE ROWID == {id}'''
-    print(query)
     cur.execute(query)
     vals = cur.fetchone()
-    print(vals)
     rst = {
         "id": vals[0],
         "date_missed": vals[1],
@@ -50,8 +47,7 @@ def table_insert(date_missed, image_link, item_name):
     if not exists:
         cur.execute(f'''CREATE TABLE {table_name}
             (date_missed text, image_link text, item_name text)''')
-    # cur.execute('''CREATE TABLE items
-    #         (date_missed text, image_link text)''')
+        
     cur.execute(f"INSERT INTO {table_name} VALUES ('{date_missed}', '{image_link}', '{item_name}')")
     id = get_row_id(cur, table_name)
     con.commit()
@@ -72,23 +68,12 @@ def table_exists(name):
         print(f"Table exists: {name}")
     else:
         rst = False
-			
-    #commit the changes to db			
+		
     con.commit()
     return rst
 
 @views.route("/", methods=["GET", "POST"])
 def item_submit():
-    
-    print("In /")
-    
-    # if request.method == "POST":
-    #     date_missed = request.form["date_missed"],
-    #     image_link = request.form["image_link"]
-    
-    #     print(f"DEBUG: {date_missed} {image_link}")
-    
-    #     table_insert(date_missed, image_link)
     
     form = ItemForm()
     message = ""
@@ -98,8 +83,6 @@ def item_submit():
 
     if request.method == "POST":   
         id = table_insert(date_missed, image_link, item_name)
-        # return redirect(url_for("Views.id_index", id = id))
-        print(f"Debug: {id}, {date_missed}, {image_link}, {item_name}")
         return redirect(url_for("Views.id_index", id=id))
     else:
         return render_template("index.html", form=form, message=message)
@@ -148,43 +131,26 @@ def print_table2():
     
     return render_template("home_page.html", len = len(items), items = items)
 
-@views.route('/submission/<id>')    #int has been used as a filter that only integer will be passed in the url otherwise it will give a 404 error
+@views.route('/submission/<id>')
 def id_index(id):
-    print(f"ID_INDEX: {id}")
-    
-    try:
-        int(id)
-        print("valid")
-    except:
-        print("invalid")
-        return f"Invalid ID: {id}"
+
+    # try:
+    #     int(id)
+    #     print("valid")
+    # except:
+    #     print("invalid")
+    #     return f"Invalid ID: {id}"
     
     conn = get_con()
     cur = conn.cursor()
     values = table_query(cur, 'items', id)
-    # return render_template("submit.html", id=id, date_missed=date_missed, image_link=image_link)
     items_list = craigslistGetter(values["item_name"], values["date_missed"])
-    
-    # print(items_list)
-    
+
     values["items_list"] = items_list
     print(f"VALUES: {values}")
     return render_template("submit.html", **values)
 
 
-# @views.route('/submission/<id>')    #int has been used as a filter that only integer will be passed in the url otherwise it will give a 404 error
-# def id_index(id):
-#     print(f"DEBUG VALUES: {values}")
-#     id = values["id"]
-#     date_missed = values["date_missed"]
-#     image_link = values["image_link"]  
-#     return render_template("submit.html", id=id, date_missed=date_missed, image_link=image_link)
-
-
 @views.route("/test")
 def test():
     return render_template("test.html")
-
-
-
-# @views.route("/<id>")

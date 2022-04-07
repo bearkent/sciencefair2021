@@ -13,4 +13,3 @@ def craigslistGetter(item_name):
 
     return items_list
 
-print(craigslistGetter("iphone"))

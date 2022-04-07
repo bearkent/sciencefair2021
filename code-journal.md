@@ -27,4 +27,8 @@ Credit to this video https://youtu.be/kng-mJJby8g to teaching me how to use and 
 
 1/27/22 Added some code in the html that pulls the image and url from craigslist. Not working yet. Also sqlite is outputting errors on "no such column: width"
 
-1/29/22 Debbuged tehe sqlite error by removing some stuff in the html. Unknoen why it is happening. Then fixed the loop to make the submit.html page display the items.
+1/29/22 Debbuged the sqlite error by removing some stuff in the html. Unknown why it is happening. Then fixed the loop to make the submit.html page display the items. Figured out that there is spam words that messed up search query. Then made a function that uses urllib to get the html and then look for certain spam words in it. If the spam words are in it it excludes the item.
+
+--Essentials Complete--
+
+ 2/4/22 Used Ngrok to create a public domain. Use ngrok http https://localhost command which is usually ngrok http https://127.0.0.1:5000
