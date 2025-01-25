@@ -76,7 +76,9 @@ def table_exists(name):
 def item_submit():
     
     form = ItemForm()
-    message = ""
+    message =
+    
+    ""
     date_missed = form.date_missed.data
     image_link = form.image_link.data
     item_name = form.item_name.data    

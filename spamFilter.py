@@ -1,5 +1,5 @@
 from cgitb import text
-from urllib import request
+# from urllib import request
 
 def isSpam(url):
     
@@ -14,7 +14,7 @@ def isSpam(url):
         if spam_word in text:
             return True
         
-    return False
+    # return False
 
 # isSpam('https://cosprings.craigslist.org/mad/d/surplus-bronze-acrylic-sheets-solar/7438433887.html')
 
