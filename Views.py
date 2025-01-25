@@ -76,12 +76,11 @@ def table_exists(name):
 def item_submit():
     
     form = ItemForm()
-    message =
-    
-    ""
+    message = ""
     date_missed = form.date_missed.data
     image_link = form.image_link.data
-    item_name = form.item_name.data    
+    item_name = form.item_name.data 
+    ""   
 
     if request.method == "POST":   
         id = table_insert(date_missed, image_link, item_name)
